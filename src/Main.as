@@ -19,7 +19,9 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+			
+			var gameMain:GameMain = new GameMain();
+			addChild(gameMain);
 		}
 		
 	}
