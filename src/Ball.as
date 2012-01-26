@@ -11,6 +11,7 @@ package
 		private var color:uint;
 		private var size:Number;
 		private var velocity:Vector2D;
+		private var colorTransform:ColorTransform;
 		
 		public function Ball(x:Number, y:Number)
 		{
@@ -23,6 +24,7 @@ package
 			gra.graphics.beginFill(color);
 			gra.graphics.drawCircle(0,0,size);
 			gra.graphics.endFill();
+			colorTransform = new ColorTransform();
 			
 			addChild(gra);
 			super();
@@ -32,18 +34,24 @@ package
 		{
 			move();
 	//		bounce();
-			if (velocity.length > 1)
+			if (0) 
 			{
-				size += velocity.length*0.1;			
+				if (velocity.length > 1)
+				{
+					size += velocity.length*0.1;			
+				}
+				else if (size >= 5)
+				{
+					size -= 1;
+				}
 			}
-			else if (size >= 5)
-			{
-				size -= 1;
-			}
+			
+			addColor(100,0,0);
+			
 			gra.graphics.clear();
-			gra.graphics.beginFill(0x00ff00);
-			gra.graphics.drawCircle(0,0,size);
-			gra.graphics.endFill();
+			gra.graphics.beginfill(color);
+			gra.graphics.drawcircle(0,0,size);
+			gra.graphics.endfill();
 			velocity.multiply(0.95);
 		}
 		
@@ -69,6 +77,15 @@ package
 		public function get position():Vector2D
 		{
 			return new Vector2D(x, y);
+		}
+		
+		public function addColor(r:Number, g:Number, b:Number):void
+		{
+			colorTransform.redOffset = r;
+			colorTransform.greenOffset = g;
+			colorTransform.blueOffset = b;
+			
+			gra.graphics.colorTransform = colorTransform;
 		}
 		
 		private function bounce():void
