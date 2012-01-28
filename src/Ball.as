@@ -1,7 +1,6 @@
 package  
 {
 	import flash.display.Sprite;
-	import flash.geom.ColorTransform;
 	/**
 	 * ...
 	 * @author Kazuhiro
@@ -25,17 +24,16 @@ package
 			gra.graphics.beginFill(color);
 			gra.graphics.drawCircle(0,0,size);
 			gra.graphics.endFill();
-			addChild(gra);
-			
 			colorTransform = new ColorTransform();
-			addColor(100,0,0);
+			
+			addChild(gra);
 			super();
 		}
 		
 		public function update():void
 		{
 			move();
-			bounce();
+	//		bounce();
 			if (0) 
 			{
 				if (velocity.length > 1)
@@ -48,10 +46,12 @@ package
 				}
 			}
 			
+			addColor(100,0,0);
+			
 			gra.graphics.clear();
-			gra.graphics.beginFill(color);
-			gra.graphics.drawCircle(0,0,size);
-			gra.graphics.endFill();
+			gra.graphics.beginfill(color);
+			gra.graphics.drawcircle(0,0,size);
+			gra.graphics.endfill();
 			velocity.multiply(0.95);
 		}
 		
@@ -84,33 +84,17 @@ package
 			colorTransform.redOffset = r;
 			colorTransform.greenOffset = g;
 			colorTransform.blueOffset = b;
-			colorTransform.redMultiplier = 0.5;
 			
-			gra.transform.colorTransform = colorTransform;
+			gra.graphics.colorTransform = colorTransform;
 		}
 		
 		private function bounce():void
 		{
-			if (this.x < 0)
+			if (x < 0)
 			{
-				velocity.x = -velocity.x;
-				this.x = 0;
+				
 			}
-			else if (stage.stageWidth <= this.x)
-			{
-				velocity.x = -velocity.x;
-				this.x = stage.stageWidth - 1;
-			}
-			if (this.y < 0)
-			{
-				velocity.y = -velocity.y;
-				this.y = 0;
-			}
-			else if (stage.stageHeight <= this.y)
-			{
-				velocity.y = -velocity.y;
-				this.y = stage.stageHeight - 1;
-			}
+			
 		}
 
 	}

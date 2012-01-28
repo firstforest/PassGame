@@ -12,7 +12,6 @@ package
 		public function PasserGroup()
 		{
 			passers = new Vector.<Passer>();
-			super();
 		}
 		
 		public function add(p:Passer):void 

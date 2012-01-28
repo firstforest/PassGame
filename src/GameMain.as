@@ -10,10 +10,10 @@ package
 	 */
 	public class GameMain extends Sprite
 	{
-		private var bGroup:BallGroup;
-		private var pGroup:PasserGroup;
-		private var keys:Array;
-		private var player:Player;
+		private var bGroup:BallGroup; // ボール集合
+		private var pGroup:PasserGroup; // パッサー集合
+		private var keys:Array; // キーボード入力用
+		private var player:Player; // プレイヤー
 		
 		public function GameMain()
 		{
