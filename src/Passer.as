@@ -7,9 +7,12 @@ package
 	public class Passer extends Agent
 	{
 		
+		private var sight:Number;
+		
 		public function Passer(x:Number, y:Number, gameMain:GameMain) 
 		{
 			super(x, y, gameMain);
+			sight = 500;
 		}
 
 		// override
@@ -17,6 +20,10 @@ package
 		{
 			var bg:BallGroup = gameMain.getBalls();
 			var balls:Vector.<Ball> = bg.getBall(position, defPower);
+			for each (var tb:Ball in balls)
+			{
+				tb.addColor(red/5, green/5, blue/5);
+			}
 			haveBalls = haveBalls.concat(balls);
 		}
 
@@ -53,13 +60,13 @@ package
 			var bg:BallGroup = gameMain.getBalls();
 			var balls:Vector.<Ball> = bg.searchBall(position, sight);
 			var vec:Vector2D;
-			if (balls.length > 0)
+			if (balls.length < 0)
 			{
 				vec = balls.pop().position.subtract(position);
 			}
 			else
 			{
-				vec = new Vector2D(mouseX, mouseY);
+				vec = new Vector2D(Math.random()*2-1, Math.random()*2-1);
 			}
 			vec.length = movePower;
 			x += vec.x;

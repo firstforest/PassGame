@@ -16,6 +16,8 @@ package
 		public function Player(x:Number, y:Number, gameMain:GameMain) 
 		{
 			super(x, y, gameMain);
+			movePower = 8;
+			atkPower = 30;
 			keys = [];
 
 			this.addEventListener(Event.ADDED_TO_STAGE, adddedStage);
@@ -45,7 +47,7 @@ package
 		
 		override public function update():void
 		{
-			receive();
+			if (haveBalls.length == 0) receive();
 			move();
 			var vec:Vector2D = new Vector2D(mouseX, mouseY);
 			vec.length = defPower;
@@ -61,6 +63,10 @@ package
 		{
 			var bg:BallGroup = gameMain.getBalls();
 			var balls:Vector.<Ball> = bg.getBall(position, defPower);
+			for each (var tb:Ball in balls)
+			{
+				tb.addColor(red, green, blue);
+			}
 			haveBalls = haveBalls.concat(balls);
 		}
 		

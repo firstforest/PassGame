@@ -20,8 +20,7 @@ package
 			bGroup = new BallGroup();
 			pGroup = new PasserGroup();
 			keys = [];
-			var b:Ball = new Ball(10, 29);
-			addChild(b);
+
 			player = new Player(30, 15, this);
 			addChild(player);
 
@@ -54,7 +53,7 @@ package
 			
 			if (keys[70]) //F
 			{
-				var b:Ball = new Ball(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight);
+				var b:Ball = new Ball(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, this);
 				addChild(b);
 				bGroup.add(b);
 			}

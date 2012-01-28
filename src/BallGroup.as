@@ -60,6 +60,12 @@ package
 			this.balls = rest;
 			return res;
 		}
+		
+		public function remove(ball:Ball):void 
+		{
+			balls.splice(balls.indexOf(ball), 1);
+		}
+		
 	}
 
 }
