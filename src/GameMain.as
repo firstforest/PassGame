@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * ...
@@ -33,6 +34,17 @@ package
 		{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+		}
+		
+		private function onMouseClick(e:MouseEvent):void 
+		{
+			if (keys[71]) //G
+			{
+				var p:Passer = new Passer(mouseX, mouseY, this);
+				addChild(p);
+				pGroup.add(p);
+			}	
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -57,13 +69,7 @@ package
 				addChild(b);
 				bGroup.add(b);
 			}
-			
-			if (keys[71]) //G
-			{
-				var p:Passer = new Passer(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, this);
-				addChild(p);
-				pGroup.add(p);
-			}
+		
 		
 		}
 		
