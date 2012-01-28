@@ -43,6 +43,26 @@ package
 			keys[e.keyCode] = false;
 		}
 		
+		override public function update():void
+		{
+			receive();
+			move();
+			var vec:Vector2D = new Vector2D(mouseX, mouseY);
+			vec.length = defPower;
+			for each (var b:Ball in haveBalls)
+			{
+				b.setPos(x+vec.x, y+vec.y);			
+			}
+						
+		}
+	
+		// override
+		override protected function receive():void
+		{
+			var bg:BallGroup = gameMain.getBalls();
+			var balls:Vector.<Ball> = bg.getBall(position, defPower);
+			haveBalls = haveBalls.concat(balls);
+		}
 		
 		override protected function move():void
 		{
@@ -61,6 +81,20 @@ package
 			if (keys[Keyboard.DOWN] || keys[83])
 			{
 				y += movePower;
+			}
+		}
+		
+		override protected function pass():void
+		{
+			var vec:Vector2D = new Vector2D(mouseX, mouseY);
+			vec.length = atkPower;
+			var bg:BallGroup = gameMain.getBalls();
+			while (haveBalls.length > 0)
+			{
+				var b:Ball = haveBalls.pop();
+				b.addForce(vec);
+				bg.add(b);
+				
 			}
 		}
 	}
