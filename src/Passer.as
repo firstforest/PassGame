@@ -30,7 +30,7 @@ package
 
 		override public function update():void
 		{
-			receive();
+			if (haveBalls.length == 0) receive();
 			move();
 			if (passable) 
 			{
@@ -68,12 +68,12 @@ package
 		override protected function receive():void
 		{
 			var bg:BallGroup = gameMain.getBalls();
-			var balls:Vector.<Ball> = bg.getBall(position, defPower);
-			for each (var tb:Ball in balls)
+			var tb:Ball = bg.getBall(position, defPower);
+			if (tb != null) 
 			{
 				tb.addColor(red/5, green/5, blue/5);
+				haveBalls.push(tb);				
 			}
-			haveBalls = haveBalls.concat(balls);
 		}
 
 		// override

@@ -41,7 +41,7 @@ package
 			return res;
 		}
 		
-		public function getBall(pos:Vector2D, searchPower:Number):Vector.<Ball>
+		public function getBalls(pos:Vector2D, searchPower:Number):Vector.<Ball>
 		{
 			var res:Vector.<Ball> = new	Vector.<Ball>();
 			var rest:Vector.<Ball> = new Vector.<Ball>();
@@ -59,6 +59,28 @@ package
 			}
 			this.balls = rest;
 			return res;
+		}
+		
+		public function getBall(pos:Vector2D, searchPower:Number):Ball
+		{
+			var res:Vector.<Ball> = new	Vector.<Ball>();
+			var rest:Vector.<Ball> = new Vector.<Ball>();
+			
+			for each (var b:Ball in balls)
+			{
+				if (pos.distance(b.position) < searchPower)
+				{
+					res.push(b);
+				}
+				else
+				{
+					rest.push(b);	
+				}
+			}
+			if (res.length == 0) return null;
+			var resBall:Ball = res.pop();
+			this.balls = rest.concat(res);
+			return resBall;
 		}
 		
 		public function remove(ball:Ball):void 
