@@ -62,7 +62,7 @@ package
 			move();
 			if (this.r == 255 && this.g == 255 && this.b == 255)
 			{
-				if (this.x < 0 || stage.stageWidth <= this.x || this.y < 0 || stage.stageHeight <= this.y) 
+				if (this.x < 0 || gameMain.fieldX <= this.x || this.y < 0 || gameMain.fieldY <= this.y) 
 				{
 					collapse();
 				}
@@ -95,7 +95,8 @@ package
 				gameMain.addChild(ball);
 			}
 			removeSound.play();
-			var p:Passer = new Passer(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, gameMain);
+			gameMain.addScore(100);
+			var p:Passer = new Passer(Math.random() * gameMain.fieldX, Math.random() * gameMain.fieldY, gameMain);
 			gameMain.getPassers().add(p);
 			gameMain.addChild(p);
 			gameMain.getBalls().remove(this);

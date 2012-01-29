@@ -47,7 +47,15 @@ package
 		
 		override public function update():void
 		{
-			if (haveBalls.length == 0) receive();
+			if (haveBalls.length == 0)
+			{
+				receive();
+			}
+			else 
+			{
+				gameMain.addScore( -1);
+			}
+			
 			move();
 			var vec:Vector2D = new Vector2D(mouseX, mouseY);
 			vec.length = defPower;
