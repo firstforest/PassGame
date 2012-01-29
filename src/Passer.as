@@ -13,11 +13,13 @@ package
 		private var sight:Number;
 		private var timer:Timer;
 		private var passable:Boolean = true;
+		private var direction:Vector2D;
 		
 		public function Passer(x:Number, y:Number, gameMain:GameMain) 
 		{
 			super(x, y, gameMain);
 			sight = 500;
+			direction = Vector2D.ZERO;
 			timer = new Timer(DELAY_TIME, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timeHandler);
 			
@@ -25,14 +27,21 @@ package
 		
 		private function timeHandler(e:TimerEvent):void 
 		{
+			timer.stop();
 			passable = true;
+			changeDirection();
+		}
+		
+		private function changeDirection():void 
+		{
+			direction = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1);	
 		}
 
 		override public function update():void
 		{
 			if (haveBalls.length == 0) receive();
 			move();
-			if (passable) 
+			if (haveBalls.length > 0 && passable) 
 			{
 				pass();
 				passable = false;
@@ -113,20 +122,9 @@ package
 		// override
 		override protected function move():void
 		{
-			var bg:BallGroup = gameMain.getBalls();
-			var balls:Vector.<Ball> = bg.searchBall(position, sight);
-			var vec:Vector2D;
-			if (balls.length < 0)
-			{
-				vec = balls.pop().position.subtract(position);
-			}
-			else
-			{
-				vec = new Vector2D(Math.random()*2-1, Math.random()*2-1);
-			}
-			vec.length = movePower;
-			x += vec.x;
-			y += vec.y;
+			direction.length = movePower;
+			x += direction.x;
+			y += direction.y;
 		}
 	}
 
