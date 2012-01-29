@@ -95,6 +95,9 @@ package
 				gameMain.addChild(ball);
 			}
 			removeSound.play();
+			var p:Passer = new Passer(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, gameMain);
+			gameMain.getPassers().add(p);
+			gameMain.addChild(p);
 			gameMain.getBalls().remove(this);
 			gameMain.removeChild(this);
 		}
@@ -159,20 +162,20 @@ package
 				velocity.x = -velocity.x;
 				this.x = 0;
 			}
-			else if (stage.stageWidth <= this.x)
+			else if (gameMain.fieldX <= this.x)
 			{
 				velocity.x = -velocity.x;
-				this.x = stage.stageWidth - 1;
+				this.x = gameMain.fieldX - 1;
 			}
 			if (this.y < 0)
 			{
 				velocity.y = -velocity.y;
 				this.y = 0;
 			}
-			else if (stage.stageHeight <= this.y)
+			else if (gameMain.fieldY <= this.y)
 			{
 				velocity.y = -velocity.y;
-				this.y = stage.stageHeight - 1;
+				this.y = gameMain.fieldY - 1;
 			}
 		}
 

@@ -16,6 +16,9 @@ package
 		private var keys:Array;
 		private var _player:Player;
 		
+		private var _fieldX:Number;
+		private var _fieldY:Number;
+		
 		private var conPane:ControlPanel;
 		private var score:Number;
 		
@@ -44,6 +47,8 @@ package
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+			_fieldX = 600;
+			_fieldY = stage.stageHeight;
 		}
 		
 		private function onMouseClick(e:MouseEvent):void 
@@ -106,6 +111,16 @@ package
 		public function get player():Player 
 		{
 			return _player;
+		}
+		
+		public function get fieldX(): Number
+		{
+			return _fieldX;
+		}
+		
+		public function get fieldY():Number 
+		{
+			return _fieldY;
 		}
 	
 	}
