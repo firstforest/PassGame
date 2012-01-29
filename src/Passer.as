@@ -40,7 +40,8 @@ package
 		override public function update():void
 		{
 			if (haveBalls.length == 0) receive();
-			move();
+			//move();
+			bounce();
 			if (haveBalls.length > 0 && passable) 
 			{
 				pass();
@@ -90,24 +91,26 @@ package
 		{
 			var pg:PasserGroup = gameMain.getPassers();
 			var passers:Vector.<Passer> = pg.searchPasser(position, sight);
+			var target:Agent = gameMain.player;
 			var vec:Vector2D = gameMain.player.position.subtract(position);
 			if (passers.length > 1)
 			{
 				for each (var p:Passer in passers)
 				{
 					if (p == this) continue;
-					if (p.position.subtract(position).length < vec.length) 
+					if (p.getMargin(x,y,haveBalls[0].getColor()) > target.getMargin(x,y,haveBalls[0].getColor()) && p.canReceive()) 
 					{
-						vec = p.position.subtract(position);
-					} 
+						target = p;
+					}  
 				}
+				vec = target.position.subtract(position);
 			}
 			else
 			{
 				if(vec.length > sight)vec = new Vector2D(Math.random()*2-1,Math.random()*2-1);
 			}
-			var bg:BallGroup = gameMain.getBalls();
 			
+			var bg:BallGroup = gameMain.getBalls();
 			while (haveBalls.length > 0)
 			{
 				var b:Ball = haveBalls.pop();
@@ -126,6 +129,36 @@ package
 			x += direction.x;
 			y += direction.y;
 		}
+		
+		public function canReceive():Boolean 
+		{
+			return haveBalls.length == 0;
+		}
+		
+		private function bounce():void
+		{
+			if (this.x < 0)
+			{
+				direction.x = -direction.x;
+				this.x = 0;
+			}
+			else if (stage.stageWidth <= this.x)
+			{
+				direction.x = -direction.x;
+				this.x = stage.stageWidth - 1;
+			}
+			if (this.y < 0)
+			{
+				direction.y = -direction.y;
+				this.y = 0;
+			}
+			else if (stage.stageHeight <= this.y)
+			{
+				direction.y = -direction.y;
+				this.y = stage.stageHeight - 1;
+			}
+		}
+		
 	}
 
 }

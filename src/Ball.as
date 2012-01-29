@@ -60,7 +60,17 @@ package
 		public function update():void
 		{
 			move();
-			bounce();
+			if (this.r == 255 && this.g == 255 && this.b == 255)
+			{
+				if (this.x < 0 || stage.stageWidth <= this.x || this.y < 0 || stage.stageHeight <= this.y) 
+				{
+					collapse();
+				}
+			}
+			else 
+			{
+				bounce();
+			}
 
 			velocity.multiply(DEATH_SPEED);
 			if (velocity.length < DEATH_LIMIT)
@@ -70,10 +80,6 @@ package
 				gameMain.removeChild(this);
 			}
 			
-			if (this.r == 255 && this.g == 255 && this.b == 255) 
-			{
-				collapse();
-			}
 		}
 		
 		public function collapse():void 
@@ -104,8 +110,7 @@ package
 			this.x = x;
 			this.y = y;
 			velocity = Vector2D.ZERO;
-		}	
-
+		}
 		
 		public function addForce(force:Vector2D):void
 		{
@@ -125,6 +130,14 @@ package
 			if (this.g > 255) this.g = 255; 
 			this.b += b;
 			if (this.b > 255) this.b = 255;
+			
+			if (this.r == 255 && this.g == 255 && this.b == 255) 
+			{
+				size = 13;
+				border.graphics.clear();
+				border.graphics.lineStyle(1, 0x0);
+				border.graphics.drawCircle(0, 0, size);
+			}
 
 			color = this.r << 16 | this.g << 8 | this.b;
 			gra.graphics.clear();
@@ -132,6 +145,11 @@ package
 			gra.graphics.drawCircle(0,0,size);
 			gra.graphics.endFill();			
 			
+		}
+		
+		public function getColor():uint
+		{
+			return color;
 		}
 		
 		private function bounce():void

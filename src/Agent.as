@@ -32,21 +32,26 @@ public class Agent extends Sprite
 		haveBalls = new Vector.<Ball>();
 		
 		// graphic
-		red = int(Math.random() * 255);
-		green = int(Math.random() * 255);
-		blue = int(Math.random() * 255);
+		
+		var t:Number = int(Math.random() * 255);
 		switch (Math.ceil(Math.random()*3)) 
 		{
 			case 0:
 				break;
 			case 1:
-				green = 0;
+				red = 0;
+				green = t;
+				blue = 255 - t;
 				break;
 			case 2:
-				blue = 0;
+				red = t;
+				green = 0;
+				blue = 255 - t;
 				break;
 			case 3:
-				red = 0;
+				red = t;
+				green = 255 - t;
+				blue = 0;
 				break;
 			break;
 			default:
@@ -92,6 +97,18 @@ public class Agent extends Sprite
 	public function get position():Vector2D
 	{
 		return new Vector2D(x, y);
+	}
+	
+	public function getMargin(x:Number, y:Number, color:uint):Number
+	{
+		var r:Number = color >> 16 && 0xFF;
+		var g:Number = color >> 8 && 0xFF;
+		var b:Number = color && 0xFF;
+		var minColor:Number = red;
+		if (g > r) minColor = green;
+		if (b > g && b > r) minColor = blue;
+		
+		return minColor;
 	}
 	
 }
