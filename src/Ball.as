@@ -25,7 +25,7 @@ package
 		private static const DEATH_LIMIT:Number = 0.05;
 		
 		// sound
-		[Embed(source = "./ta_ge_kane01.mp3", mimeType = "audio/mpeg")]
+		[Embed(source = "./sen_ka_katana_kosure01.mp3", mimeType = "audio/mpeg")]
 		private var rmSound:Class;
 		private var removeSound:Sound;
 		
@@ -61,41 +61,36 @@ package
 		{
 			move();
 			bounce();
-			if (0) 
-			{
-				if (velocity.length > 1)
-				{
-					size += velocity.length*0.1;			
-				}
-				else if (size >= 5)
-				{
-					size -= 1;
-				}
-			}
 
 			velocity.multiply(DEATH_SPEED);
 			if (velocity.length < DEATH_LIMIT)
 			{
+				gameMain.addScore(10);
 				gameMain.getBalls().remove(this);
 				gameMain.removeChild(this);
 			}
 			
 			if (this.r == 255 && this.g == 255 && this.b == 255) 
 			{
-				for (var i:int = 0; i < 7; i++) 
-				{
-					var c:uint = Math.random() * 0xFFFFFF;
-					var ball:Ball = new Ball(x, y, c, gameMain);
-					var vec:Vector2D = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 -1);
-					vec.length = 10;
-					ball.addForce(vec);
-					gameMain.getBalls().add(ball);
-					gameMain.addChild(ball);
-				}
-				removeSound.play();
-				gameMain.getBalls().remove(this);
-				gameMain.removeChild(this);
+				collapse();
 			}
+		}
+		
+		public function collapse():void 
+		{
+			for (var i:int = 0; i < 7; i++) 
+			{
+				var c:uint = Math.random() * 0xFFFFFF;
+				var ball:Ball = new Ball(x, y, c, gameMain);
+				var vec:Vector2D = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 -1);
+				vec.length = 10;
+				ball.addForce(vec);
+				gameMain.getBalls().add(ball);
+				gameMain.addChild(ball);
+			}
+			removeSound.play();
+			gameMain.getBalls().remove(this);
+			gameMain.removeChild(this);
 		}
 		
 		private function move():void

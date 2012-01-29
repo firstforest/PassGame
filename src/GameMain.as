@@ -14,16 +14,25 @@ package
 		private var bGroup:BallGroup;
 		private var pGroup:PasserGroup;
 		private var keys:Array;
-		public var player:Player;
+		private var _player:Player;
+		
+		private var conPane:ControlPanel;
+		private var score:Number;
+		
 		
 		public function GameMain()
 		{
 			bGroup = new BallGroup();
 			pGroup = new PasserGroup();
 			keys = [];
+			
+			conPane = new ControlPanel(this);
+			addChild(conPane);
 
-			player = new Player(30, 15, this);
-			addChild(player);
+			_player = new Player(30, 15, this);
+			addChild(_player);
+			
+			score = 0;
 
 			addEventListener(Event.ENTER_FRAME, loop);
 			addEventListener(Event.ADDED_TO_STAGE, addedStage);
@@ -62,6 +71,7 @@ package
 			pGroup.update();
 			bGroup.update();
 			player.update();
+			conPane.update();
 			
 			if (keys[70]) //F
 			{
@@ -81,6 +91,21 @@ package
 		public function getPassers():PasserGroup
 		{
 			return pGroup;
+		}
+		
+		public function getScore():Number
+		{
+			return score;
+		}
+		
+		public function addScore(score:Number):void
+		{
+			this.score += score;
+		}
+		
+		public function get player():Player 
+		{
+			return _player;
 		}
 	
 	}
