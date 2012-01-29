@@ -35,6 +35,22 @@ public class Agent extends Sprite
 		red = int(Math.random() * 255);
 		green = int(Math.random() * 255);
 		blue = int(Math.random() * 255);
+		switch (Math.ceil(Math.random()*3)) 
+		{
+			case 0:
+				break;
+			case 1:
+				green = 0;
+				break;
+			case 2:
+				blue = 0;
+				break;
+			case 3:
+				red = 0;
+				break;
+			break;
+			default:
+		}
 		color = red << 16 | green << 8 | blue;
 		gra = new Sprite();
 		gra.graphics.beginFill(color);

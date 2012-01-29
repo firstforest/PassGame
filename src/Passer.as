@@ -32,11 +32,9 @@ package
 		{
 			var pg:PasserGroup = gameMain.getPassers();
 			var passers:Vector.<Passer> = pg.searchPasser(position, sight);
-			var vec:Vector2D;
+			var vec:Vector2D = gameMain.player.position.subtract(position);
 			if (passers.length > 1)
 			{
-				vec = new Vector2D(1, 1);
-				vec.length = sight;
 				for each (var p:Passer in passers)
 				{
 					if (p == this) continue;
@@ -48,7 +46,7 @@ package
 			}
 			else
 			{
-				vec = new Vector2D(10,50);
+				if(vec.length > sight)vec = new Vector2D(Math.random()*2-1,Math.random()*2-1);
 			}
 			var bg:BallGroup = gameMain.getBalls();
 			

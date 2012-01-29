@@ -14,7 +14,7 @@ package
 		private var bGroup:BallGroup;
 		private var pGroup:PasserGroup;
 		private var keys:Array;
-		private var player:Player;
+		public var player:Player;
 		
 		public function GameMain()
 		{
