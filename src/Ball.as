@@ -22,7 +22,7 @@ package
 		private static const DEATH_SPEED:Number = 0.95;
 		private static const DEATH_LIMIT:Number = 0.05;
 		
-		public function Ball(x:Number, y:Number, gameMain:GameMain)
+		public function Ball(x:Number, y:Number, color:uint, gameMain:GameMain)
 		{
 			this.x = x;
 			this.y = y;
@@ -30,9 +30,9 @@ package
 			size = 10;
 			velocity = new Vector2D(Math.random() * 20,	Math.random() * 20);
 			
-			r = 0x00;
-			g = 0x00;
-			b = 0x00;
+			r = color >> 16 & 0xFF;
+			g = color >> 8 & 0xFF;
+			b = color & 0xFF;
 			
 			color = r << 16 | g << 8 | b;
 			gra = new Sprite();
@@ -75,7 +75,8 @@ package
 			{
 				for (var i:int = 0; i < 7; i++) 
 				{
-					var ball:Ball = new Ball(x, y, gameMain);
+					var c:uint = Math.random() * 0xFFFFFF;
+					var ball:Ball = new Ball(x, y, c, gameMain);
 					var vec:Vector2D = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 -1);
 					vec.length = 10;
 					ball.addForce(vec);

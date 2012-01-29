@@ -65,7 +65,7 @@ package
 			
 			if (keys[70]) //F
 			{
-				var b:Ball = new Ball(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, this);
+				var b:Ball = new Ball(Math.random() * stage.stageWidth, Math.random() * stage.stageHeight, 0x0, this);
 				addChild(b);
 				bGroup.add(b);
 			}
