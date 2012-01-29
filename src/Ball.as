@@ -2,6 +2,8 @@ package
 {
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
+	import flash.media.Sound;
+	import flash.net.URLRequest;
 	/**
 	 * ...
 	 * @author Kazuhiro
@@ -22,6 +24,11 @@ package
 		private static const DEATH_SPEED:Number = 0.95;
 		private static const DEATH_LIMIT:Number = 0.05;
 		
+		// sound
+		[Embed(source = "./ta_ge_kane01.mp3", mimeType = "audio/mpeg")]
+		private var rmSound:Class;
+		private var removeSound:Sound;
+		
 		public function Ball(x:Number, y:Number, color:uint, gameMain:GameMain)
 		{
 			this.x = x;
@@ -29,6 +36,8 @@ package
 			this.gameMain = gameMain;
 			size = 10;
 			velocity = new Vector2D(Math.random() * 20,	Math.random() * 20);
+			
+			removeSound = new rmSound();
 			
 			r = color >> 16 & 0xFF;
 			g = color >> 8 & 0xFF;
@@ -83,6 +92,7 @@ package
 					gameMain.getBalls().add(ball);
 					gameMain.addChild(ball);
 				}
+				removeSound.play();
 				gameMain.getBalls().remove(this);
 				gameMain.removeChild(this);
 			}
