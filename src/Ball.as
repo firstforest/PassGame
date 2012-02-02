@@ -1,9 +1,11 @@
 package  
 {
 	import flash.display.Sprite;
+	import flash.events.TimerEvent;
 	import flash.geom.ColorTransform;
 	import flash.media.Sound;
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
 	/**
 	 * ...
 	 * @author Kazuhiro
@@ -13,6 +15,7 @@ package
 		private var gameMain:GameMain;
 		private var gra:Sprite;
 		private var border:Sprite;
+		private	var borderLine:Number;
 		private var color:uint;
 		private var size:Number;
 		private var velocity:Vector2D;
@@ -25,9 +28,13 @@ package
 		private static const DEATH_LIMIT:Number = 0.05;
 		
 		// sound
-		[Embed(source = "./sen_ka_katana_kosure01.mp3", mimeType = "audio/mpeg")]
+		[Embed(source = "./b_070.mp3", mimeType = "audio/mpeg")]
 		private var rmSound:Class;
 		private var removeSound:Sound;
+		[Embed(source = "./b_065.mp3", mimeType = "audio/mpeg")]
+		private var vnSound:Class;
+		private var vanishSound:Sound;
+		
 		
 		public function Ball(x:Number, y:Number, color:uint, gameMain:GameMain)
 		{
@@ -38,19 +45,21 @@ package
 			velocity = new Vector2D(Math.random() * 20,	Math.random() * 20);
 			
 			removeSound = new rmSound();
+			vanishSound = new vnSound();
 			
 			r = color >> 16 & 0xFF;
 			g = color >> 8 & 0xFF;
 			b = color & 0xFF;
 			
-			color = r << 16 | g << 8 | b;
+			this.color = color;
 			gra = new Sprite();
 			gra.graphics.beginFill(color);
 			gra.graphics.drawCircle(0, 0, size);
 			gra.graphics.endFill();
 			addChild(gra);
 			border = new Sprite();
-			border.graphics.lineStyle(1, 0x0);
+			borderLine = 1;
+			border.graphics.lineStyle(borderLine, 0x0);
 			border.graphics.drawCircle(0, 0, size);
 			addChild(border);
 			
@@ -60,26 +69,58 @@ package
 		public function update():void
 		{
 			move();
-			if (this.r == 255 && this.g == 255 && this.b == 255)
+			if (this.r == 255 && this.g == 255 && this.b == 255) //ボールが白くなったとき
 			{
 				if (this.x < 0 || gameMain.fieldX <= this.x || this.y < 0 || gameMain.fieldY <= this.y) 
 				{
-					collapse();
+					collapse(); //崩壊
 				}
 			}
 			else 
 			{
-				bounce();
+				bounce(); //跳ね返り処理
 			}
 
+			// ボール減速処理
 			velocity.multiply(DEATH_SPEED);
+			// ボール消失処理
 			if (velocity.length < DEATH_LIMIT)
 			{
-				gameMain.addScore(10);
-				gameMain.getBalls().remove(this);
-				gameMain.removeChild(this);
+				vanish();
 			}
 			
+		}
+		
+		private function vanish():void 
+		{
+			gameMain.addScore(10);
+			gameMain.getBalls().remove(this);
+			
+			removeChild(gra);
+			vanishSound.play();
+
+			var timer:Timer = new Timer(1, 40);
+			size /= 10;
+			borderLine = 5;
+			timer.addEventListener(TimerEvent.TIMER, vanishAnime);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerHandler);
+			timer.start();
+			
+			//gameMain.removeChild(this);
+		}
+		
+		private function timerHandler(e:TimerEvent):void 
+		{
+			gameMain.removeChild(this);
+		}
+		
+		private function vanishAnime(e:TimerEvent):void 
+		{
+			border.graphics.clear();
+			border.graphics.lineStyle(borderLine, color);
+			border.graphics.drawCircle(0, 0, size);
+			size *= 1.1;
+			borderLine *= 0.95;
 		}
 		
 		public function collapse():void 
@@ -135,6 +176,7 @@ package
 			this.b += b;
 			if (this.b > 255) this.b = 255;
 			
+			// 崩壊可能グラフィック
 			if (this.r == 255 && this.g == 255 && this.b == 255) 
 			{
 				size = 13;
@@ -158,25 +200,25 @@ package
 		
 		private function bounce():void
 		{
-			if (this.x < 0)
+			if (this.x-size < 0)
 			{
 				velocity.x = -velocity.x;
-				this.x = 0;
+				this.x = size;
 			}
-			else if (gameMain.fieldX <= this.x)
+			else if (gameMain.fieldX <= this.x+size)
 			{
 				velocity.x = -velocity.x;
-				this.x = gameMain.fieldX - 1;
+				this.x = gameMain.fieldX - size;
 			}
-			if (this.y < 0)
+			if (this.y-size< 0)
 			{
 				velocity.y = -velocity.y;
-				this.y = 0;
+				this.y = size;
 			}
-			else if (gameMain.fieldY <= this.y)
+			else if (gameMain.fieldY <= this.y+size)
 			{
 				velocity.y = -velocity.y;
-				this.y = gameMain.fieldY - 1;
+				this.y = gameMain.fieldY - size;
 			}
 		}
 
