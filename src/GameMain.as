@@ -4,6 +4,8 @@ package
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	/**
 	 * ...
@@ -11,6 +13,7 @@ package
 	 */
 	public class GameMain extends Sprite
 	{
+		static public const COMBO_TIME_MAX:Number = 10000; // コンボ時間（ms）
 		private var bGroup:BallGroup;
 		private var pGroup:PasserGroup;
 		private var keys:Array;
@@ -19,9 +22,10 @@ package
 		private var _fieldX:Number;
 		private var _fieldY:Number;
 		
+		private var stat:Status;
 		private var conPane:ControlPanel;
-		private var score:Number;
 		
+		private var timer:Timer;
 		
 		public function GameMain()
 		{
@@ -29,17 +33,30 @@ package
 			pGroup = new PasserGroup();
 			keys = [];
 			
-			conPane = new ControlPanel(this);
+			stat = new Status();
+			conPane = new ControlPanel(stat);
 			addChild(conPane);
 
 			_player = new Player(30, 15, this);
 			addChild(_player);
 			
-			score = 0;
+			timer = new Timer(1);
+			timer.addEventListener(TimerEvent.TIMER, timerHandler);
+			timer.start();
 
 			addEventListener(Event.ENTER_FRAME, loop);
 			addEventListener(Event.ADDED_TO_STAGE, addedStage);
 			super();
+		}
+		
+		private function timerHandler(e:TimerEvent):void 
+		{
+			stat.comboTime --;
+			if (stat.comboTime <= 0)
+			{
+				stat.rate = 1;
+				stat.comboTime = 0;
+			}
 		}
 		
 		private function addedStage(e:Event):void
@@ -84,8 +101,12 @@ package
 				addChild(b);
 				bGroup.add(b);
 			}
+		}
 		
-		
+		public function gainCombo()
+		{
+			stat.rate++;
+			stat.comboTime = COMBO_TIME_MAX;
 		}
 		
 		public function getBalls():BallGroup
@@ -98,14 +119,9 @@ package
 			return pGroup;
 		}
 		
-		public function getScore():Number
-		{
-			return score;
-		}
-		
 		public function addScore(score:Number):void
 		{
-			this.score += score;
+			stat.score += score*stat.rate;
 		}
 		
 		public function get player():Player 

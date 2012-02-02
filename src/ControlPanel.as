@@ -10,13 +10,13 @@ package
 	{
 		private var backGround:Sprite;
 		private var scoreFiled:TextField;
-		private var gameMain:GameMain;
+		private var stat:Status;
 		
-		public function ControlPanel(gameMain:GameMain) 
+		public function ControlPanel(stat:Status) 
 		{
 			x = 600;
 			y = 0;
-			this.gameMain = gameMain;
+			this.stat = stat;
 			
 			backGround = new Sprite();
 			backGround.graphics.beginFill(0x333333);
@@ -37,7 +37,7 @@ package
 		
 		public function update():void
 		{
-			scoreFiled.text = "score: " + gameMain.getScore();
+			scoreFiled.text = "score: " + stat.score;
 		}
 		
 	}
