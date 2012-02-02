@@ -86,7 +86,14 @@ package
 			// ボール消失処理
 			if (velocity.length < DEATH_LIMIT)
 			{
-				vanish();
+				if (this.r == 255 && this.g == 255 && this.b == 255) 
+				{
+					collapse();
+				}
+				else 
+				{
+					vanish();
+				}
 			}
 			
 		}

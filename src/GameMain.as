@@ -119,7 +119,7 @@ package
 			}
 		}
 		
-		public function gainCombo()
+		public function gainCombo():void
 		{
 			stat.rate++;
 			stat.comboTime = COMBO_TIME_MAX;
