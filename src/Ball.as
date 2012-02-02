@@ -71,7 +71,7 @@ package
 			move();
 			if (this.r == 255 && this.g == 255 && this.b == 255) //ボールが白くなったとき
 			{
-				if (this.x < 0 || gameMain.fieldX <= this.x || this.y < 0 || gameMain.fieldY <= this.y) 
+				if (this.x-size < 0 || gameMain.fieldX <= this.x+size || this.y-size < 0 || gameMain.fieldY <= this.y+size) 
 				{
 					collapse(); //崩壊
 				}
@@ -142,6 +142,7 @@ package
 			gameMain.addChild(p);
 			gameMain.getBalls().remove(this);
 			gameMain.removeChild(this);
+			gameMain.gainCombo();
 		}
 		
 		private function move():void

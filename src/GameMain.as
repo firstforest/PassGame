@@ -5,6 +5,8 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.utils.Timer;
 	
 	/**
@@ -27,6 +29,11 @@ package
 		
 		private var timer:Timer;
 		
+		// BGM
+		[Embed(source = "./lo_044.mp3", mimeType = "audio/mpeg")]
+		private var BGM:Class;
+		private var bgm:Sound;
+		
 		public function GameMain()
 		{
 			bGroup = new BallGroup();
@@ -46,7 +53,16 @@ package
 
 			addEventListener(Event.ENTER_FRAME, loop);
 			addEventListener(Event.ADDED_TO_STAGE, addedStage);
+			
+			bgm = new BGM();
+			var soundChannel:SoundChannel = bgm.play(0,int.MAX_VALUE);
+			soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundEnd);
 			super();
+		}
+		
+		private function onSoundEnd(e:Event):void 
+		{
+			bgm.play();
 		}
 		
 		private function timerHandler(e:TimerEvent):void 
