@@ -15,7 +15,6 @@ package
 	 */
 	public class GameMain extends Sprite
 	{
-		static public const COMBO_TIME_MAX:Number = 10000; // コンボ時間（ms）
 		private var bGroup:BallGroup;
 		private var pGroup:PasserGroup;
 		private var keys:Array;
@@ -33,6 +32,10 @@ package
 		[Embed(source = "./lo_044.mp3", mimeType = "audio/mpeg")]
 		private var BGM:Class;
 		private var bgm:Sound;
+		
+		[Embed(source = "./b_091.mp3", mimeType = "audio/mpeg")]
+		private var GainComboSound:Class;
+		private var gainCombSound:Sound;
 		
 		public function GameMain()
 		{
@@ -57,6 +60,9 @@ package
 			bgm = new BGM();
 			var soundChannel:SoundChannel = bgm.play(0,int.MAX_VALUE);
 			soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundEnd);
+			
+			gainCombSound = new GainComboSound();
+			
 			super();
 		}
 		
@@ -67,7 +73,7 @@ package
 		
 		private function timerHandler(e:TimerEvent):void 
 		{
-			stat.comboTime --;
+			stat.comboTime -= 10;
 			if (stat.comboTime <= 0)
 			{
 				stat.rate = 1;
@@ -121,8 +127,13 @@ package
 		
 		public function gainCombo():void
 		{
-			stat.rate++;
-			stat.comboTime = COMBO_TIME_MAX;
+			stat.comboTime += Status.COMBO_TIME_MAX / 10;
+			if (stat.comboTime > Status.COMBO_TIME_MAX) 
+			{
+				stat.comboTime = Status.COMBO_TIME_MAX;
+				stat.rate++;
+				gainCombSound.play();
+			}
 		}
 		
 		public function getBalls():BallGroup

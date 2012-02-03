@@ -6,6 +6,7 @@ package
 	 */
 	public class Status 
 	{
+		static public const COMBO_TIME_MAX:Number = 10000; // コンボ時間（ms）
 		private var _score:Number; // スコア
 		private var _rate:Number; // 得点倍率
 		private var _comboTime:Number; // コンボ残り時間

@@ -8,7 +8,7 @@ package
 	 */
 	public class Passer extends Agent
 	{
-		static public const DELAY_TIME:uint = 3000;
+		static public const DELAY_TIME:uint = 1000;
 		
 		private var sight:Number;
 		private var timer:Timer;
