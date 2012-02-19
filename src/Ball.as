@@ -144,9 +144,7 @@ package
 			}
 			removeSound.play();
 			gameMain.addScore(100);
-			var p:Passer = new Passer(Math.random() * gameMain.fieldX, Math.random() * gameMain.fieldY, gameMain);
-			gameMain.getPassers().add(p);
-			gameMain.addChild(p);
+			gameMain.addPasserStock();
 			gameMain.getBalls().remove(this);
 			gameMain.removeChild(this);
 			gameMain.gainCombo();

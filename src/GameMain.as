@@ -15,6 +15,7 @@ package
 	 */
 	public class GameMain extends Sprite
 	{
+		static public const P_Stock_MAX:Number = 5;
 		private var bGroup:BallGroup;
 		private var pGroup:PasserGroup;
 		private var keys:Array;
@@ -36,6 +37,7 @@ package
 		[Embed(source = "./b_091.mp3", mimeType = "audio/mpeg")]
 		private var GainComboSound:Class;
 		private var gainCombSound:Sound;
+		private var pStock:Vector.<Boolean>;
 		
 		public function GameMain()
 		{
@@ -62,6 +64,12 @@ package
 			soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundEnd);
 			
 			gainCombSound = new GainComboSound();
+			
+			pStock = new Vector.<Boolean>;
+			for (var i:int = 0; i < P_Stock_MAX; i++) 
+			{
+				pStock[i] = false;
+			}
 			
 			super();
 		}
@@ -97,7 +105,12 @@ package
 				var p:Passer = new Passer(mouseX, mouseY, this);
 				addChild(p);
 				pGroup.add(p);
-			}	
+			}
+			
+			if (keys[72]) 
+			{
+				addPasserStock();
+			}
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
@@ -150,6 +163,34 @@ package
 		{
 			stat.score += score*stat.rate;
 		}
+		
+		public function addPasserStock():void 
+		{
+			for (var i:int = 0; i < P_Stock_MAX; i++) 
+			{
+				if (pStock[i]) 
+				{
+					continue;
+				}
+				else 
+				{
+					pStock[i] = true;
+					var p:PasserStock = new PasserStock(fieldX+20 + i*(PasserStock.SIZE*3), 400, i, this);
+					addChild(p);
+					break;
+				}
+			}
+		}
+		
+		public function addPasser(ps:PasserStock):void
+		{
+			removeChild(ps);
+			pStock[ps.num] = false;
+			var p:Passer = new Passer(ps.x, ps.y, this);
+			pGroup.add(p);
+			addChild(p);
+		}
+		
 		
 		public function get player():Player 
 		{
